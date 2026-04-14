@@ -26,3 +26,33 @@ def energy_fcfs(gantt):
     for pid, start, end in gantt:
         energy += (2.0**2) * (end - start)   # always high freq
     return energy
+
+def priority_scheduling(processes):
+    time = 0
+    ready = []
+    gantt = []
+    processes.sort(key=lambda x: x.arrival)
+
+    while processes or ready:
+        while processes and processes[0].arrival <= time:
+            ready.append(processes.pop(0))
+
+        if ready:
+            
+            ready.sort(key=lambda x: x.priority)
+            p = ready.pop(0)
+
+            start = time
+            end = time + p.burst
+            gantt.append((p.pid, start, end))
+            time = end
+        else:
+            time += 1
+
+    return gantt
+
+def energy_priority(gantt):
+    energy = 0
+    for pid, start, end in gantt:
+        energy += (2.0**2) * (end - start)   
+    return energy
