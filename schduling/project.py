@@ -91,3 +91,9 @@ def energy_eaas(gantt):
         energy += (freq**2) * burst
 
     return energy
+
+def print_gantt(name, gantt):
+    print(f"\n{name} Gantt Chart:")
+    for pid, start, end in gantt:
+        print(f"| {pid} ({start}-{end}) ", end="")
+    print("|")
