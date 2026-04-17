@@ -97,3 +97,57 @@ def print_gantt(name, gantt):
     for pid, start, end in gantt:
         print(f"| {pid} ({start}-{end}) ", end="")
     print("|")
+
+def main():
+    n = int(input("Enter number of processes: "))
+    processes = []
+
+    for i in range(n):
+        at = int(input(f"Arrival time of P{i+1}: "))
+        bt = int(input(f"Burst time of P{i+1}: "))
+        pr = int(input(f"Priority of P{i+1}: "))
+        processes.append(Process(f"P{i+1}", at, bt, pr))
+
+    
+    p1 = [Process(p.pid, p.arrival, p.burst, p.priority) for p in processes]
+    fcfs_gantt = fcfs(p1)
+    fcfs_energy = energy_fcfs(fcfs_gantt)
+
+  
+    p2 = [Process(p.pid, p.arrival, p.burst, p.priority) for p in processes]
+    pr_gantt = priority_scheduling(p2)
+    pr_energy = energy_priority(pr_gantt)
+
+  
+    p3 = [Process(p.pid, p.arrival, p.burst, p.priority) for p in processes]
+    eaas_gantt = eaas(p3)
+    eaas_energy = energy_eaas(eaas_gantt)
+
+    
+    print_gantt("FCFS", fcfs_gantt)
+    print_gantt("PRIORITY", pr_gantt)
+    print_gantt("EAAS", eaas_gantt)
+
+   
+    print("\n\n📊 ENERGY COMPARISON")
+    print("-----------------------------------")
+    print("Algorithm     Energy")
+    print("-----------------------------------")
+    print(f"FCFS          {fcfs_energy}")
+    print(f"PRIORITY      {pr_energy}")
+    print(f"EAAS          {eaas_energy}")
+    print("-----------------------------------")
+
+    
+    algorithms = ["FCFS", "Priority", "EAAS"]
+    energies = [fcfs_energy, pr_energy, eaas_energy]
+
+    plt.bar(algorithms, energies)
+    plt.xlabel("Algorithms")
+    plt.ylabel("Energy")
+    plt.title("Energy Comparison")
+    plt.show()
+
+
+if _name_ == "_main_":
+    main()
