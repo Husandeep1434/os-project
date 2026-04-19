@@ -92,6 +92,47 @@ def energy_eaas(gantt):
 
     return energy
 
+def round_robin(processes, time_quantum):
+    time = 0
+    ready = []
+    gantt = []
+    processes.sort(key=lambda x: x.arrival)
+    rem_burst = {p.pid: p.burst for p in processes}
+    unarrived = processes.copy()
+    
+    if unarrived:
+        time = unarrived[0].arrival
+        
+    while unarrived and unarrived[0].arrival <= time:
+        ready.append(unarrived.pop(0))
+        
+    while ready or unarrived:
+        if not ready:
+            time = unarrived[0].arrival
+            while unarrived and unarrived[0].arrival <= time:
+                ready.append(unarrived.pop(0))
+                
+        p = ready.pop(0)
+        start = time
+        execute_time = min(rem_burst[p.pid], time_quantum)
+        time += execute_time
+        rem_burst[p.pid] -= execute_time
+        gantt.append((p.pid, start, time))
+        
+        while unarrived and unarrived[0].arrival <= time:
+            ready.append(unarrived.pop(0))
+            
+        if rem_burst[p.pid] > 0:
+            ready.append(p)
+            
+    return gantt
+
+def energy_rr(gantt):
+    energy = 0
+    for pid, start, end in gantt:
+        energy += (2.0**2) * (end - start)   
+    return energy
+
 def calculate_metrics(processes, gantt):
     finish_times = {}
     for pid, start, end in gantt:

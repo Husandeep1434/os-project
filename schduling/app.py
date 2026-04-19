@@ -11,7 +11,13 @@ def home():
 @app.route('/simulate', methods=['POST'])
 def simulate():
     data = request.json
-    
+    req_data = request.json
+    if isinstance(req_data, dict) and 'processes' in req_data:
+        data = req_data['processes']
+        tq = int(req_data.get('time_quantum', 2))
+    else:
+        data = req_data
+        tq = 2
     processes = []
     for p in data:
         processes.append(Process(p['id'], int(p['arrival']), int(p['burst']), int(p['priority'])))
@@ -34,10 +40,16 @@ def simulate():
     eaas_energy = project.energy_eaas(eaas_gantt)
     eaas_tat, eaas_wt = project.calculate_metrics(processes, eaas_gantt)
     
+    p_rr = copy_procs()
+    rr_gantt = project.round_robin(p_rr, tq)
+    rr_energy = project.energy_rr(rr_gantt)
+    rr_tat, rr_wt = project.calculate_metrics(processes, rr_gantt)
+
     return jsonify({
         "fcfs": {"gantt": fcfs_gantt, "energy": fcfs_energy, "tat": fcfs_tat, "wt": fcfs_wt},
         "priority": {"gantt": pr_gantt, "energy": pr_energy, "tat": pr_tat, "wt": pr_wt},
-        "eaas": {"gantt": eaas_gantt, "energy": eaas_energy, "tat": eaas_tat, "wt": eaas_wt}
+        "eaas": {"gantt": eaas_gantt, "energy": eaas_energy, "tat": eaas_tat, "wt": eaas_wt},
+        "rr": {"gantt": rr_gantt, "energy": rr_energy, "tat": rr_tat, "wt":rr_wt}
     })
 
 if __name__ == '__main__':
