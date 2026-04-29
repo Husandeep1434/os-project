@@ -1,0 +1,30 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "type": "cppbuild",
+            "label": "Build C Server",
+            "command": "gcc",
+            "args": [
+                "-g",
+                "${workspaceFolder}\\server.c",
+                "${workspaceFolder}\\mongoose.c",
+                "${workspaceFolder}\\cJSON.c",
+                "-o",
+                "${workspaceFolder}\\server.exe",
+                "-lws2_32"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "detail": "Compiles the C server with Mongoose and cJSON."
+        }
+    ]
+}

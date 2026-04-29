@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EAAS CPU Scheduler</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="static/style.css">
+</head>
+<body>
+    <div class="background-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1>Energy-Aware Algorithm Scheduler <span>(EAAS)</span></h1>
+            <p>Optimize mobile task execution using dynamic voltage simulation.</p>
+        </header>
+
+        <main>
+            <section class="glass-panel input-section">
+                <div class="section-header">
+                    <h2>Process Queue</h2>
+                    <button id="add-process-btn" class="btn primary-btn">+ Add Process</button>
+                </div>
+                
+                <div class="table-container">
+                    <table id="process-table">
+                        <thead>
+                            <tr>
+                                <th>Process ID</th>
+                                <th>Arrival Time</th>
+                                <th>Burst Time</th>
+                                <th>Priority (Lower=Higher)</th>
+                                <th>Delete</th>
+                            </tr>
+                        </thead>
+                        <tbody id="process-body">
+                            <!-- Rows will be injected by JS -->
+                        </tbody>
+                    </table>
+                </div>
+                <div class="action-bar">
+                    <button id="simulate-btn" class="btn glow-btn">Run</button>
+                </div>
+            </section>
+
+            <section id="results-section" class="glass-panel results-section hidden">
+                <h2 style="margin-bottom: 2rem; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 1rem;">Simulation Results</h2>
+                
+                <div class="table-container" style="margin-bottom: 2rem;">
+                    <table id="metrics-table">
+                        <thead>
+                            <tr>
+                                <th>Algorithm</th>
+                                <th>Energy (Lower Is Better)</th>
+                                <th>Avg Turnaround Time</th>
+                                <th>Avg Waiting Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="metrics-body">
+                            <!-- Populated by JS -->
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="dashboard-grid">
+                    <div class="chart-container" id="energyChartContainer">
+                        <!-- Energy Table Chart will be injected here -->
+                    </div>
+                    <div class="chart-container" id="performanceChartContainer">
+                        <!-- Performance Table Chart will be injected here -->
+                    </div>
+                </div>
+
+                <div class="gantt-container">
+                    <h3 style="margin-bottom: 2rem; color: #fff;">Gantt Charts</h3>
+                    
+                    <div class="gantt-wrapper">
+                        <h4>First Come First Serve (FCFS)</h4>
+                        <div id="gantt-fcfs" class="gantt-chart"></div>
+                    </div>
+
+                    <div class="gantt-wrapper">
+                        <h4>Priority Scheduling</h4>
+                        <div id="gantt-priority" class="gantt-chart"></div>
+                    </div>
+
+                    <div class="gantt-wrapper">
+                        <h4>Round Robin (RR)</h4>
+                        <div id="gantt-rr" class="gantt-chart"></div>
+                    </div>
+
+                    <div class="gantt-wrapper">
+                        <h4>EAAS (Proposed Algorithm)</h4>
+                        <div id="gantt-eaas" class="gantt-chart"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script src="static/script.js"></script>
+</body>
+</html>
